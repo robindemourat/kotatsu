@@ -12,6 +12,7 @@ var webpack = require('webpack'),
     resolve = require('./resolve.js'),
     path = require('path'),
     fs = require('fs'),
+    UglifyJSPlugin = require('uglifyjs-webpack-plugin'),
     _ = require('lodash');
 
 /**
@@ -160,7 +161,19 @@ module.exports = function createCompiler(opts) {
     config.plugins.push(new BundleUpdateHookPlugin());
 
   if (opts.minify && !usedPlugins.uglify)
-    config.plugins.push(new webpack.optimize.UglifyJsPlugin());
+    config.plugins.push(
+      new UglifyJSPlugin({
+        uglifyOptions: {
+            ie8: false,
+            ecma: 8,
+            output: {
+              comments: false,
+              beautify: false,
+            },
+          }
+        })
+    );
+    // config.plugins.push(new webpack.optimize.UglifyJsPlugin());
 
   // Are we creating a config for backend?
   if (backEnd) {
