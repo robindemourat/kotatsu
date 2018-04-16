@@ -56,5 +56,8 @@ module.exports = function build(side, opts) {
 
     logger.info('Built in ' + pretty(stats.time) + '.');
     logger.success('Done!');
+    if (opts.callback) {
+      opts.callback(err, stats);
+    }
   });
 };
